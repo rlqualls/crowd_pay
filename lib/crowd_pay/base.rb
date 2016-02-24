@@ -154,14 +154,9 @@ module CrowdPay
       base.class_eval do
         cattr_reader :domain, :api_key, :portal_key, :connection, :associations
 
-        #config = YAML::load_file(File.join(Rails.root, 'config/crowd_pay.yml'))
-        config = YAML.load(ERB.new(File.read("#{Rails.root}/config/crowd_pay.yml")).result)[Rails.env]
-
-        raise "Please configure config/crowd_pay.yml" unless config
-
-        class_variable_set(:@@domain, config["domain"])
-        class_variable_set(:@@api_key, config["api_key"])
-        class_variable_set(:@@portal_key, config["portal_key"])
+        class_variable_set(:@@domain, ENV["crowd_pay_domain"])
+        class_variable_set(:@@api_key, ENV["crowd_pay_api_key"])
+        class_variable_set(:@@portal_key, ENV["crowd_pay_portal_key"])
         class_variable_set(:@@associations, {})
 
         unless(base.class_variable_get(:@@connection))
